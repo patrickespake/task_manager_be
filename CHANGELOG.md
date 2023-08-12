@@ -24,3 +24,4 @@ Sections should be in the alphabetic order for each release:
 - [5. Create Task Model and Migration](https://trello.com/c/ucmsH1zD/5-5-create-task-model-and-migration)
 - [8. Task Validations](https://trello.com/c/ovKAfU6u/8-8-task-validations)
 - [6. Database Versioning Setup](https://trello.com/c/ArYpaQCN/6-6-database-versioning-setup)
+- [7. Design RESTful API Endpoints](https://trello.com/c/YLaVlIKC/7-7-design-restful-api-endpoints)
