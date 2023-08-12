@@ -1,0 +1,199 @@
+---
+openapi: 3.0.1
+info:
+  title: API
+  version: v1
+components:
+  schemas:
+    ErrorObject:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ErrorsMap"
+    ErrorsMap:
+      type: object
+      properties:
+        detail:
+          type: string
+        source:
+          type: object
+          properties:
+            pointer:
+              type: string
+    CustomError:
+      type: object
+      properties:
+        model:
+          type: string
+          x-nullable: true
+        custom_errors:
+          type: array
+          items:
+            type: object
+            properties:
+              source:
+                type: string
+              detail:
+                type: string
+        errors_json:
+          type: object
+          properties:
+            errors:
+              type: array
+              items: {}
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: johndoe@example.com
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-08-12T11:56:37.149Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-08-12T11:56:37.149Z'
+  securitySchemes:
+    Bearer:
+      in: header
+      name: authorization
+      type: apiKey
+      require: true
+      description: Bearer Token
+paths:
+  "/api/v1/oauth/revoke":
+    post:
+      summary: revoke an existing token
+      tags:
+      - Oauth
+      description: Revoke an existing token
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+        required: true
+  "/api/v1/oauth/token":
+    post:
+      summary: token operations
+      tags:
+      - Oauth
+      description: Endpoint for token creation (grant_type=password) and refresh (grant_type=refresh_token).
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                    default: Bearer
+                  expires_in:
+                    type: integer
+                    description: token expiration in seconds
+                    default: 7200
+                  refresh_token:
+                    type: string
+                  created_at:
+                    type: integer
+                    example: '1691852188'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorObject"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: enum
+                  default: password
+                  values:
+                  - password
+                  - refresh_token
+                  description: Use "password" for new token and "refresh_token" for
+                    refreshing an existing token.
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                email:
+                  type: string
+                  description: Required only when grant_type = password.
+                password:
+                  type: string
+                  description: Required only when grant_type = password.
+                refresh_token:
+                  type: string
+                  description: Required only when grant_type = refresh_token.
+        required: true
+  "/api/v1/user":
+    get:
+      summary: get user
+      tags:
+      - User
+      description: Get currently signed in user
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      type:
+                        type: string
+                        default: user
+                      attributes:
+                        type: object
+                        "$ref": "#/components/schemas/User"
+        '401':
+          description: unauthorized
+servers:
+- url: "{defaultHost}"
+  variables:
+    defaultHost:
+      default: http://localhost:3000

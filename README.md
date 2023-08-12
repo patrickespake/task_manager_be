@@ -96,6 +96,14 @@ RuboCop is a static code analyzer and formatter for Ruby. I use it to enforce a 
 docker-compose exec rails rubocop
 ```
 
+## API Documentation
+
+The API documentation is available at [http://localhost:3000/api-docs/index.html](http://localhost:3000/api-docs/index.html). The documentation is generated using Swagger with the help of the `rswag-api` and `rswag-ui` gems. By writing RSpec tests, the API documentation is simultaneously generated.
+
+## Testing the API with Postman
+
+A Postman collection is available for testing the API endpoints. You can access and use it through the following link: [https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023](https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023)
+
 ## Contributing to Task Manager BE
 
 To contribute to Task Manager BE, follow these steps:

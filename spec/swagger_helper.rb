@@ -23,18 +23,18 @@ RSpec.configure do |config|
       },
       components: {
         schemas: {
-          error_object: {
+          ErrorObject: {
             type: :object,
             properties: {
               errors: {
                 type: :array,
                 items: {
-                  '$ref' => '#/components/schemas/errors_map',
+                  '$ref' => '#/components/schemas/ErrorsMap',
                 },
               },
             },
           },
-          errors_map: {
+          ErrorsMap: {
             type: :object,
             properties: {
               detail: { type: :string },
@@ -44,6 +44,37 @@ RSpec.configure do |config|
                   pointer: { type: :string },
                 },
               },
+            },
+          },
+          CustomError: {
+            type: :object,
+            properties: {
+              model: { type: :string, 'x-nullable': true },
+              custom_errors: {
+                type: :array,
+                items: {
+                  type: :object,
+                  properties: {
+                    source: { type: :string },
+                    detail: { type: :string },
+                  },
+                },
+              },
+              errors_json: {
+                type: :object,
+                properties: {
+                  errors: { type: :array, items: {} },
+                },
+              },
+            },
+          },
+          User: {
+            type: :object,
+            properties: {
+              name: { type: :string, example: 'John Doe' },
+              email: { type: :string, example: 'johndoe@example.com' },
+              created_at: { type: :string, format: 'date-time', example: '2023-08-12T11:56:37.149Z' },
+              updated_at: { type: :string, format: 'date-time', example: '2023-08-12T11:56:37.149Z' },
             },
           },
         },
