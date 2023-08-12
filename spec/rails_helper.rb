@@ -10,6 +10,7 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
+require 'database_cleaner'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -37,6 +38,7 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort(e.to_s.strip)
 end
+
 RSpec.configure do |config|
   config.swagger_dry_run = false
 
@@ -70,4 +72,14 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.before(:suite) { DatabaseCleaner.clean_with(:truncation) }
+
+  config.before(:each) { DatabaseCleaner.strategy = :transaction }
+
+  config.before(:each, type: :feature) { DatabaseCleaner.strategy = :truncation }
+
+  config.before(:each) { DatabaseCleaner.start }
+
+  config.after(:each) { DatabaseCleaner.clean }
 end

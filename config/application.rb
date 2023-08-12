@@ -38,5 +38,8 @@ module TaskManagerBe
 
     # Cors policy enabled for all origins
     config.hosts.clear
+
+    # Necessary for reify to work with paper_trail gem
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone]
   end
 end

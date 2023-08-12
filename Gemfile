@@ -9,6 +9,7 @@ gem 'bootsnap', require: false
 gem 'devise'
 gem 'doorkeeper'
 gem 'jsonapi-serializer'
+gem 'paper_trail'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
@@ -36,5 +37,6 @@ group :development do
 end
 
 group :test do
+  gem 'database_cleaner'
   gem 'shoulda-matchers', require: false
 end

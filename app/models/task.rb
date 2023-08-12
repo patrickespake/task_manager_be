@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  # PaperTrail used for versioning
+  has_paper_trail
+
   # Associations
   belongs_to :user
 
