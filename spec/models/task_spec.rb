@@ -54,4 +54,22 @@ RSpec.describe Task, type: :model do
       end
     end
   end
+
+  describe 'versioning', versioning: true do
+    let!(:task) { create(:task) }
+
+    it 'tracks changes to task' do
+      expect { task.update(title: 'New Title') }.to change(task.versions, :count).by(1)
+
+      # Checking if the previous title can be retrieved from the version
+      expect(task.paper_trail.previous_version.title).not_to eq('New Title')
+    end
+
+    it 'tracks task destruction' do
+      expect { task.destroy }.to change(PaperTrail::Version, :count).by(1)
+
+      # The task should be recoverable from its version
+      expect(task.versions.last.reify).to be_a(Task)
+    end
+  end
 end
