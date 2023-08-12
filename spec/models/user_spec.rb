@@ -7,6 +7,10 @@ RSpec.describe User, type: :model do
     expect(build(:user)).to be_valid
   end
 
+  describe 'associations' do
+    it { should have_many(:tasks).dependent(:destroy) }
+  end
+
   context 'validations' do
     it { should validate_presence_of(:name) }
     it { should validate_length_of(:name).is_at_most(100) }

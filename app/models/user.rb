@@ -6,6 +6,9 @@ class User < ApplicationRecord
   # :registerable, :recoverable, :rememberable
   devise :database_authenticatable, :validatable, :trackable
 
+  # Associations
+  has_many :tasks, dependent: :destroy
+
   # Validations
   validates :name, presence: true, length: { maximum: 100 }
   validate :password_complexity
