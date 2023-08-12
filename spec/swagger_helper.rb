@@ -77,6 +77,87 @@ RSpec.configure do |config|
               updated_at: { type: :string, format: 'date-time', example: '2023-08-12T11:56:37.149Z' },
             },
           },
+          Task: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: 'uuid', example: '8154fa08-4523-47db-abde-388301e43318' },
+              type: { type: :string, example: 'task' },
+              attributes: {
+                type: :object,
+                properties: {
+                  title: { type: :string, example: 'Sample Task' },
+                  description: { type: %i[string null], example: 'Sample description.' },
+                  status: { type: :string, example: 'incomplete', enum: ['incomplete', 'completed'] },
+                  due_date: { type: %i[string null], format: 'date', example: '2023-10-12' },
+                  priority: { type: :string, example: 'low', enum: ['low', 'medium', 'high'] },
+                  created_at: { type: :string, format: 'date-time', example: '2023-08-12T20:07:00.126Z' },
+                  updated_at: { type: :string, format: 'date-time', example: '2023-08-12T20:07:00.126Z' },
+                },
+              },
+              relationships: {
+                type: :object,
+                properties: {
+                  user: { '$ref' => '#/components/schemas/UserRelationship' },
+                  versions: { '$ref' => '#/components/schemas/VersionsRelationship' }
+                }
+              }
+            },
+          },
+          Version: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: 'uuid' },
+              type: { type: :string, example: 'version' },
+              attributes: {
+                type: :object,
+                properties: {
+                  event: { type: :string, example: 'create' },
+                  changeset: { type: :object }, # This is a placeholder. Adjust according to the application's needs.
+                  created_at: { type: :string, format: 'date-time', example: '2023-08-12T20:07:00.126Z' }
+                }
+              }
+            }
+          },
+          Included: {
+            type: :array,
+            items: {
+              type: :object,
+              properties: {
+                id: { type: :string },
+                type: { type: :string },
+                attributes: { type: :object }
+              }
+            }
+          },                     
+          UserRelationship: {
+            type: :object,
+            properties: {
+              data: { '$ref' => '#/components/schemas/UserReference' },
+            },
+          },
+          UserReference: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: 'uuid', example: 'be210d3f-8765-4c91-ba89-4ae335bbdd45' },
+              type: { type: :string, example: 'user' }
+            }
+          },
+          VersionsRelationship: {
+            type: :object,
+            properties: {
+              data: {
+                type: :array,
+                items: { '$ref' => '#/components/schemas/VersionReference' }
+              },
+            },
+          },
+          VersionReference: {
+            type: :object,
+            properties: {
+              id: { type: :string, format: 'uuid', example: '61618027-b1bf-4fb0-8285-0e014b1cd60c' },
+              type: { type: :string, example: 'version' }
+            }
+          },
         },
         securitySchemes: {
           Bearer: {

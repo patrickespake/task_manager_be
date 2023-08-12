@@ -2,7 +2,7 @@
 
 require 'swagger_helper'
 
-RSpec.describe 'user', type: :request do
+RSpec.describe 'User', type: :request do
   path '/api/v1/user' do
     get('get user') do
       tags 'User'

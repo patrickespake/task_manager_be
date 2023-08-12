@@ -60,6 +60,125 @@ components:
           type: string
           format: date-time
           example: '2023-08-12T11:56:37.149Z'
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 8154fa08-4523-47db-abde-388301e43318
+        type:
+          type: string
+          example: task
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              example: Sample Task
+            description:
+              type:
+              - string
+              - 'null'
+              example: Sample description.
+            status:
+              type: string
+              example: incomplete
+              enum:
+              - incomplete
+              - completed
+            due_date:
+              type:
+              - string
+              - 'null'
+              format: date
+              example: '2023-10-12'
+            priority:
+              type: string
+              example: low
+              enum:
+              - low
+              - medium
+              - high
+            created_at:
+              type: string
+              format: date-time
+              example: '2023-08-12T20:07:00.126Z'
+            updated_at:
+              type: string
+              format: date-time
+              example: '2023-08-12T20:07:00.126Z'
+        relationships:
+          type: object
+          properties:
+            user:
+              "$ref": "#/components/schemas/UserRelationship"
+            versions:
+              "$ref": "#/components/schemas/VersionsRelationship"
+    Version:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          example: version
+        attributes:
+          type: object
+          properties:
+            event:
+              type: string
+              example: create
+            changeset:
+              type: object
+            created_at:
+              type: string
+              format: date-time
+              example: '2023-08-12T20:07:00.126Z'
+    Included:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          type:
+            type: string
+          attributes:
+            type: object
+    UserRelationship:
+      type: object
+      properties:
+        data:
+          "$ref": "#/components/schemas/UserReference"
+    UserReference:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: be210d3f-8765-4c91-ba89-4ae335bbdd45
+        type:
+          type: string
+          example: user
+    VersionsRelationship:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VersionReference"
+    VersionReference:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 61618027-b1bf-4fb0-8285-0e014b1cd60c
+        type:
+          type: string
+          example: version
   securitySchemes:
     Bearer:
       in: header
@@ -159,6 +278,201 @@ paths:
                   type: string
                   description: Required only when grant_type = refresh_token.
         required: true
+  "/api/v1/tasks":
+    get:
+      summary: list tasks
+      tags:
+      - Tasks
+      description: Get a list of tasks for the currently signed-in user
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Task"
+        '401':
+          description: unauthorized
+    post:
+      summary: create task
+      tags:
+      - Tasks
+      description: Create a new task for the currently signed-in user
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '201':
+          description: task created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Task"
+                  included:
+                    "$ref": "#/components/schemas/Included"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorObject"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorObject"
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                  required:
+                  - title
+                  - status
+  "/api/v1/tasks/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show task
+      tags:
+      - Tasks
+      description: Get details of a specific task
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Task"
+                  included:
+                    "$ref": "#/components/schemas/Included"
+        '404':
+          description: task not found
+        '401':
+          description: unauthorized
+    put:
+      summary: update task
+      tags:
+      - Tasks
+      description: Update a specific task
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '200':
+          description: task updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    "$ref": "#/components/schemas/Task"
+                  included:
+                    "$ref": "#/components/schemas/Included"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorObject"
+        '422':
+          description: update failed
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ErrorObject"
+        '404':
+          description: task not found
+        '401':
+          description: unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    description:
+                      type: string
+                    status:
+                      type: string
+                    due_date:
+                      type: string
+                      format: date
+                    priority:
+                      type: string
+                  required:
+                  - title
+                  - status
+    delete:
+      summary: delete task
+      tags:
+      - Tasks
+      description: Delete a specific task
+      security:
+      - Bearer: {}
+      parameters:
+      - name: authorization
+        in: header
+      responses:
+        '204':
+          description: task deleted
+        '404':
+          description: task not found
+        '401':
+          description: unauthorized
   "/api/v1/user":
     get:
       summary: get user
