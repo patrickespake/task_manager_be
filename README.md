@@ -2,7 +2,11 @@
 
 Welcome to the backend repository for the Task Manager application. This Rails application is designed to offer comprehensive task management capabilities, from creating and updating tasks to advanced filtering and analytics.
 
-This is the backend repository. A Rails application that interacts with a Postgres database. The project is dockerized for ease of development and deployment.
+## Important Note
+
+This project does not handle CRUD operations for users. To utilize the API, you should run the `rails db:seed` command. This will create an OAuth2 application with Doorkeeper and display the `client_id` and `client_secret` in the terminal. Additionally, a user will be created with an email and password, which you can use to log into the API.
+
+This is the backend repository: a Rails application that interacts with a Postgres database. The project is dockerized for ease of development and deployment.
 
 ## Overview
 
