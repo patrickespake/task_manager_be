@@ -2,7 +2,11 @@
 
 Welcome to the backend repository for the Task Manager application. This Rails application is designed to offer comprehensive task management capabilities, from creating and updating tasks to advanced filtering and analytics.
 
-This is the backend repository. A Rails application that interacts with a Postgres database. The project is dockerized for ease of development and deployment.
+## Important Note
+
+This project does not handle CRUD operations for users. To utilize the API, you should run the `rails db:seed` command. This will create an OAuth2 application with Doorkeeper and display the `client_id` and `client_secret` in the terminal. Additionally, a user will be created with an email and password, which you can use to log into the API.
+
+This is the backend repository: a Rails application that interacts with a Postgres database. The project is dockerized for ease of development and deployment.
 
 ## Overview
 
@@ -95,6 +99,14 @@ RuboCop is a static code analyzer and formatter for Ruby. I use it to enforce a 
 ```bash
 docker-compose exec rails rubocop
 ```
+
+## API Documentation
+
+The API documentation is available at [http://localhost:3000/api-docs/index.html](http://localhost:3000/api-docs/index.html). The documentation is generated using Swagger with the help of the `rswag-api` and `rswag-ui` gems. By writing RSpec tests, the API documentation is simultaneously generated.
+
+## Testing the API with Postman
+
+A Postman collection is available for testing the API endpoints. You can access and use it through the following link: [https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023](https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023)
 
 ## Contributing to Task Manager BE
 

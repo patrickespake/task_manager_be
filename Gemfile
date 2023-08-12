@@ -6,11 +6,14 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.2.2'
 
 gem 'bootsnap', require: false
+gem 'devise'
+gem 'doorkeeper'
 gem 'jsonapi-serializer'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.7'
+gem 'rails-i18n'
 gem 'rswag-api'
 gem 'rswag-ui'
 gem 'rubocop-rails', require: false

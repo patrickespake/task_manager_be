@@ -20,3 +20,4 @@ Sections should be in the alphabetic order for each release:
 - [2. GitHub Repository Creation](https://trello.com/c/vgHilzOD/3-2-github-repository-creation)
 - [3. Gem Installation and Configuration](https://trello.com/c/CMYbiv9J/2-3-gem-installation-and-configuration)
 - [4. Database Setup](https://trello.com/c/0jMOW919/4-4-database-setup)
+- [16. Implement User Model for API Authentication](https://trello.com/c/8hMt0TyS/16-16-implement-user-model-for-api-authentication)
