@@ -283,12 +283,25 @@ paths:
       summary: list tasks
       tags:
       - Tasks
-      description: Get a list of tasks for the currently signed-in user
+      description: Get a list of tasks for the currently signed-in user. Supports
+        pagination with the "page" and "per_page" query parameters.
       security:
       - Bearer: {}
       parameters:
       - name: authorization
         in: header
+      - name: page
+        in: query
+        description: Page number for pagination
+        required: false
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        description: Number of tasks per page (max 50)
+        required: false
+        schema:
+          type: integer
       responses:
         '200':
           description: successful
@@ -301,6 +314,30 @@ paths:
                     type: array
                     items:
                       "$ref": "#/components/schemas/Task"
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 2
+                      total_pages:
+                        type: integer
+                        example: 3
+                      total_count:
+                        type: integer
+                        example: 5
+                      next_page:
+                        type: integer
+                        x-nullable: true
+                        example: 3
+                      prev_page:
+                        type: integer
+                        x-nullable: true
+                        example: 1
+                    required:
+                    - current_page
+                    - total_pages
+                    - total_count
         '401':
           description: unauthorized
     post:

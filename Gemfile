@@ -9,6 +9,7 @@ gem 'bootsnap', require: false
 gem 'devise'
 gem 'doorkeeper'
 gem 'jsonapi-serializer'
+gem 'kaminari'
 gem 'paper_trail'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'

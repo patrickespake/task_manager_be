@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class Api::V1::TasksController < ApplicationController
+  ITEMS_PER_PAGE = 50
+  public_constant :ITEMS_PER_PAGE
+
   before_action :set_task, only: %i[show update destroy]
 
   def index
-    tasks = current_user.tasks
-    render json: ::TaskSerializer.new(tasks)
+    tasks = paginated_tasks
+    render json: ::TaskSerializer.new(tasks, meta: pagination_meta(tasks))
   end
 
   def show
@@ -39,6 +42,21 @@ class Api::V1::TasksController < ApplicationController
 
   def json_options
     { include: %i[user versions] }
+  end
+
+  def paginated_tasks
+    per_page = [params[:per_page].to_i, ITEMS_PER_PAGE].min
+    current_user.tasks.page(params[:page]).per(per_page)
+  end
+
+  def pagination_meta(tasks)
+    {
+      current_page: tasks.current_page,
+      total_pages: tasks.total_pages,
+      total_count: tasks.total_count,
+      next_page: tasks.next_page,
+      prev_page: tasks.prev_page,
+    }
   end
 
   def set_task

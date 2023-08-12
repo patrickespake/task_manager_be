@@ -9,16 +9,40 @@ RSpec.describe 'Tasks', type: :request do
   path '/api/v1/tasks' do
     get('list tasks') do
       tags 'Tasks'
-      description 'Get a list of tasks for the currently signed-in user'
+      description 'Get a list of tasks for the currently signed-in user. ' \
+                  'Supports pagination with the "page" and "per_page" query parameters.'
       consumes 'application/json'
       produces 'application/json'
 
       security [Bearer: {}]
       parameter name: :authorization, in: :header
+      parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
+      parameter name: :per_page, in: :query, type: :integer, description: "Number of tasks per page (max #{Api::V1::TasksController::ITEMS_PER_PAGE})",
+                required: false
+
       let!(:tasks) { create_list :task, 5, user: }
 
       response(200, 'successful') do
-        schema type: :object, properties: { data: { type: :array, items: { '$ref' => '#/components/schemas/Task' } } }
+        let(:page) { 2 }
+        let(:per_page) { 2 }
+
+        schema type: :object, properties: {
+          data: {
+            type: :array,
+            items: { '$ref' => '#/components/schemas/Task' },
+          },
+          meta: {
+            type: :object,
+            properties: {
+              current_page: { type: :integer, example: 2 },
+              total_pages: { type: :integer, example: 3 },
+              total_count: { type: :integer, example: 5 },
+              next_page: { type: :integer, 'x-nullable': true, example: 3 },
+              prev_page: { type: :integer, 'x-nullable': true, example: 1 },
+            },
+            required: %w[current_page total_pages total_count],
+          },
+        }
 
         run_test!
       end
