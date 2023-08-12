@@ -16,7 +16,7 @@ The application provides the following core features:
 
 ## Kanban Management
 
-To better manage the development process and track ongoing activities, we're using a Kanban board. You can access and review our task breakdown and progress on our Trello board:
+To better manage the development process and track ongoing activities, I'm using a Kanban board. You can access and review our task breakdown and progress on our Trello board:
 
 [Task Manager BE Trello Board](https://trello.com/invite/b/cKWPtv9S/ATTI769cdbcf830a1bf657b1815d6c40c6a84BC0FE17/task-manager-be)
 
@@ -90,7 +90,7 @@ After running the tests with RSpec, `SimpleCov` will generate a coverage report 
 
 ## Running RuboCop
 
-RuboCop is a static code analyzer and formatter for Ruby. We use it to enforce a consistent code style in the project. To run RuboCop, you can use the following command:
+RuboCop is a static code analyzer and formatter for Ruby. I use it to enforce a consistent code style in the project. To run RuboCop, you can use the following command:
 
 ```bash
 docker-compose exec rails rubocop
