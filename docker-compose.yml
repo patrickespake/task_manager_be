@@ -1,0 +1,54 @@
+version: '3.8'
+
+x-backend: &backend
+  build:
+    context: .
+    args:
+    - BUNDLE_WITHOUT=
+    - RAILS_ENV=development
+  stdin_open: true
+  tty: true
+  environment:
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    WEB_CONCURRENCY: 0
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    EDITOR: vi
+    WEBPACKER_DEV_SERVER_HOST: webpacker
+    RAILS_LOG_TO_STDOUT: "true"
+    NODE_ENV: development
+    RAILS_ENV: ${RAILS_ENV:-development}
+  env_file:
+    - ./.env.development
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  rails:
+    <<: *backend
+    command: bash -c "bundle exec rake db:migrate && bundle exec rails server -b 0.0.0.0"
+    ports:
+      - '3000:3000'
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=task_manager_be_development
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U postgres -h 127.0.0.1
+      interval: 5s
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: dracula
+      ADMINER_DEFAULT_DB_DRIVER: psql
+      ADMINER_DEFAULT_DB_NAME: task_manager_be_development
