@@ -32,18 +32,18 @@ RSpec.describe ErrorSerializer do
     end
 
     context 'when there are associated model errors' do
-      # let(:associated_model) { AssociatedModel.new }
+      let(:task) { Task.new }
 
-      # before do
-      #   user.associated_models << associated_model
-      #   associated_model.valid?
-      # end
+      before do
+        user.tasks << task
+        task.valid?
+      end
 
-      xit 'serializes the associated model errors' do
-        pending('Will be implemented in future pull requests.')
-        # expect(
-        #   serialized_errors[:errors],
-        # ).to include(hash_including(source: { pointer: '/data/attributes/associated_models[0].attribute_name' }))
+      it 'serializes the associated model errors' do
+        expect(serialized_errors[:errors]).to include(hash_including(
+          source: { pointer: '/data/attributes/tasks[0].title' },
+          detail: "can't be blank",
+        ))
       end
     end
   end
