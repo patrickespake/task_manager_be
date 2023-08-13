@@ -27,3 +27,4 @@ Sections should be in the alphabetic order for each release:
 - [7. Design RESTful API Endpoints](https://trello.com/c/YLaVlIKC/7-7-design-restful-api-endpoints)
 - [9. Implement Filtering, Pagination, and Search](https://trello.com/c/aYBZtLif/9-9-implement-filtering-pagination-and-search)
 - [10. Advanced SQL Query Implementation](https://trello.com/c/dRm5uvtQ/10-10-advanced-sql-query-implementation)
+- [11. Performance Optimization](https://trello.com/c/2A4yJVEL/11-11-performance-optimization)
