@@ -284,7 +284,8 @@ paths:
       tags:
       - Tasks
       description: Get a list of tasks for the currently signed-in user. Supports
-        pagination with the "page" and "per_page" query parameters.
+        pagination with the "page" and "per_page" query parameters. You can also filter
+        tasks by status, due date, and priority using the "q[...]" parameters.
       security:
       - Bearer: {}
       parameters:
@@ -302,6 +303,25 @@ paths:
         required: false
         schema:
           type: integer
+      - name: q[status_eq]
+        in: query
+        description: Filter by task status
+        required: false
+        schema:
+          type: string
+      - name: q[due_date_eq]
+        in: query
+        format: date
+        description: Filter by task due date
+        required: false
+        schema:
+          type: string
+      - name: q[priority_eq]
+        in: query
+        description: Filter by task priority
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful

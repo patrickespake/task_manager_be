@@ -45,8 +45,12 @@ class Api::V1::TasksController < ApplicationController
   end
 
   def paginated_tasks
-    per_page = [params[:per_page].to_i, ITEMS_PER_PAGE].min
-    current_user.tasks.page(params[:page]).per(per_page)
+    tasks_search = current_user.tasks.ransack(search_params)
+    tasks = tasks_search.result
+
+    per_page = params[:per_page].present? ? [params[:per_page].to_i, ITEMS_PER_PAGE].min : ITEMS_PER_PAGE
+
+    tasks.page(params[:page]).per(per_page)
   end
 
   def pagination_meta(tasks)
@@ -65,5 +69,11 @@ class Api::V1::TasksController < ApplicationController
 
   def task_params
     params.require(:task).permit(:title, :description, :status, :due_date, :priority)
+  end
+
+  def search_params
+    return {} unless params[:q].present?
+
+    params.require(:q).permit(:status_eq, :due_date_eq, :priority_eq)
   end
 end

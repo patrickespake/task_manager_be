@@ -16,6 +16,7 @@ gem 'puma', '~> 5.0'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.7'
 gem 'rails-i18n'
+gem 'ransack'
 gem 'rswag-api'
 gem 'rswag-ui'
 gem 'rubocop-rails', require: false

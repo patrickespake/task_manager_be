@@ -10,14 +10,23 @@ RSpec.describe 'Tasks', type: :request do
     get('list tasks') do
       tags 'Tasks'
       description 'Get a list of tasks for the currently signed-in user. ' \
-                  'Supports pagination with the "page" and "per_page" query parameters.'
+                  'Supports pagination with the "page" and "per_page" query parameters. ' \
+                  'You can also filter tasks by status, due date, and priority using the "q[...]" parameters.'
+
       consumes 'application/json'
       produces 'application/json'
 
       security [Bearer: {}]
       parameter name: :authorization, in: :header
+
       parameter name: :page, in: :query, type: :integer, description: 'Page number for pagination', required: false
       parameter name: :per_page, in: :query, type: :integer, description: "Number of tasks per page (max #{Api::V1::TasksController::ITEMS_PER_PAGE})",
+                required: false
+
+      parameter name: :'q[status_eq]', in: :query, type: :string, description: 'Filter by task status', required: false
+      parameter name: :'q[due_date_eq]', in: :query, type: :string, format: 'date',
+                description: 'Filter by task due date', required: false
+      parameter name: :'q[priority_eq]', in: :query, type: :string, description: 'Filter by task priority',
                 required: false
 
       let!(:tasks) { create_list :task, 5, user: }
