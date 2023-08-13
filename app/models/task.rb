@@ -4,6 +4,14 @@ class Task < ApplicationRecord
   # PaperTrail used for versioning
   has_paper_trail
 
+  # PgSearch used for full text search
+  include PgSearch::Model
+  pg_search_scope :search_by_title_and_description,
+                  against: %i[title description],
+                  using: {
+                    tsearch: { prefix: true },
+                  }
+
   # Associations
   belongs_to :user
 

@@ -322,6 +322,12 @@ paths:
         required: false
         schema:
           type: string
+      - name: keyword
+        in: query
+        description: Keyword search by task title and description
+        required: false
+        schema:
+          type: string
       responses:
         '200':
           description: successful

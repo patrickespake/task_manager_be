@@ -45,12 +45,21 @@ class Api::V1::TasksController < ApplicationController
   end
 
   def paginated_tasks
-    tasks_search = current_user.tasks.ransack(search_params)
-    tasks = tasks_search.result
+    tasks = filtered_tasks
 
-    per_page = params[:per_page].present? ? [params[:per_page].to_i, ITEMS_PER_PAGE].min : ITEMS_PER_PAGE
-
+    per_page = determine_items_per_page
     tasks.page(params[:page]).per(per_page)
+  end
+
+  def filtered_tasks
+    tasks = current_user.tasks
+    tasks = tasks.search_by_title_and_description(params[:keyword]) if params[:keyword].present?
+    tasks_search = tasks.ransack(search_params)
+    tasks_search.result
+  end
+
+  def determine_items_per_page
+    params[:per_page].present? ? [params[:per_page].to_i, ITEMS_PER_PAGE].min : ITEMS_PER_PAGE
   end
 
   def pagination_meta(tasks)

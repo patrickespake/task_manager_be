@@ -29,6 +29,9 @@ RSpec.describe 'Tasks', type: :request do
       parameter name: :'q[priority_eq]', in: :query, type: :string, description: 'Filter by task priority',
                 required: false
 
+      parameter name: :keyword, in: :query, type: :string, description: 'Keyword search by task title and description',
+                required: false
+
       let!(:tasks) { create_list :task, 5, user: }
 
       response(200, 'successful') do
