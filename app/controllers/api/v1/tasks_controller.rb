@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class Api::V1::TasksController < ApplicationController
-  ITEMS_PER_PAGE = 50
-  public_constant :ITEMS_PER_PAGE
-
-  before_action :set_task, only: %i[show update destroy]
+  include PaginationConcern
+  include SearchConcern
+  include TaskManagementConcern
 
   def index
     tasks = paginated_tasks
@@ -42,47 +41,5 @@ class Api::V1::TasksController < ApplicationController
 
   def json_options
     { include: %i[user versions] }
-  end
-
-  def paginated_tasks
-    tasks = filtered_tasks
-
-    per_page = determine_items_per_page
-    tasks.page(params[:page]).per(per_page)
-  end
-
-  def filtered_tasks
-    tasks = current_user.tasks
-    tasks = tasks.search_by_title_and_description(params[:keyword]) if params[:keyword].present?
-    tasks_search = tasks.ransack(search_params)
-    tasks_search.result
-  end
-
-  def determine_items_per_page
-    params[:per_page].present? ? [params[:per_page].to_i, ITEMS_PER_PAGE].min : ITEMS_PER_PAGE
-  end
-
-  def pagination_meta(tasks)
-    {
-      current_page: tasks.current_page,
-      total_pages: tasks.total_pages,
-      total_count: tasks.total_count,
-      next_page: tasks.next_page,
-      prev_page: tasks.prev_page,
-    }
-  end
-
-  def set_task
-    @task = current_user.tasks.find(params[:id])
-  end
-
-  def task_params
-    params.require(:task).permit(:title, :description, :status, :due_date, :priority)
-  end
-
-  def search_params
-    return {} unless params[:q].present?
-
-    params.require(:q).permit(:status_eq, :due_date_eq, :priority_eq)
   end
 end
