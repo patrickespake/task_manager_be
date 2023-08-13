@@ -122,6 +122,18 @@ GEM
       addressable (>= 2.8)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     language_server-protocol (3.17.0.3)
     loofah (2.21.3)
       crass (~> 1.0.2)
@@ -157,6 +169,9 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.3)
+    pg_search (2.3.6)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -204,6 +219,10 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    ransack (3.2.1)
+      activerecord (>= 6.1.5)
+      activesupport (>= 6.1.5)
+      i18n
     regexp_parser (2.8.1)
     reline (0.3.7)
       io-console (~> 0.5)
@@ -298,13 +317,16 @@ DEPENDENCIES
   factory_bot_rails
   faker
   jsonapi-serializer
+  kaminari
   paper_trail
   pg (~> 1.1)
+  pg_search
   pry-rails
   puma (~> 5.0)
   rack-cors
   rails (~> 7.0.7)
   rails-i18n
+  ransack
   rspec-rails
   rswag-api
   rswag-specs

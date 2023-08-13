@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 class Api::V1::TasksController < ApplicationController
-  before_action :set_task, only: %i[show update destroy]
+  include PaginationConcern
+  include SearchConcern
+  include TaskManagementConcern
 
   def index
-    tasks = current_user.tasks
-    render json: ::TaskSerializer.new(tasks)
+    tasks = paginated_tasks
+    render json: ::TaskSerializer.new(tasks, meta: pagination_meta(tasks))
   end
 
   def show
@@ -39,13 +41,5 @@ class Api::V1::TasksController < ApplicationController
 
   def json_options
     { include: %i[user versions] }
-  end
-
-  def set_task
-    @task = current_user.tasks.find(params[:id])
-  end
-
-  def task_params
-    params.require(:task).permit(:title, :description, :status, :due_date, :priority)
   end
 end
