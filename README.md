@@ -108,6 +108,28 @@ The API documentation is available at [http://localhost:3000/api-docs/index.html
 
 A Postman collection is available for testing the API endpoints. You can access and use it through the following link: [https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023](https://www.postman.com/patrickespake/workspace/my-workspace/collection/5866023-a40c3e9d-48b5-4c1e-970a-cd862dc4385f?action=share&creator=5866023)
 
+## Potential Improvements and Performance Bottlenecks
+
+As the creator of this application, I've identified several potential improvements and areas where performance bottlenecks might arise, especially as data scales:
+
+1. **Database Optimization:** With the increase in data, database queries can become slower. It might be necessary to introduce optimizations such as indexing frequently queried columns, especially in the tasks table.
+
+2. **Caching:** Implement caching mechanisms, like Redis, to cache frequent and costly operations, thereby reducing database load and improving response times.
+
+3. **Rate Limiting:** To protect the API from potential abuse or accidental heavy loads, introducing a rate limiting mechanism can be beneficial.
+
+4. **Background Jobs:** Some operations can be moved to background processes, like sending notifications or generating reports, to improve response times and offload tasks from the main application thread.
+
+5. **Eager Loading:** To reduce the number of database queries, we might need to implement eager loading on associated records.
+
+6. **Enhanced Search:** As data grows, the current search functionality might become slower. Integrating a dedicated search engine like Elasticsearch can improve search capabilities and speed.
+
+7. **Code Refactor:** Some concerns/modules have grown and can be broken down further to adhere more strictly to the Single Responsibility Principle.
+
+8. **Monitoring and Logging:** To better understand bottlenecks and issues in real-time, integrating tools like New Relic or Datadog can help monitor performance and catch problems early.
+
+9. **Documentation Update:** As new features are added, ensuring that API documentation is up-to-date and comprehensive becomes essential. Regular reviews of the documentation against the actual API will help maintain clarity for all developers.
+
 ## Contributing to Task Manager BE
 
 To contribute to Task Manager BE, follow these steps:
